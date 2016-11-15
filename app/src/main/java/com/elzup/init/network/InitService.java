@@ -1,33 +1,30 @@
 package com.elzup.init.network;
 
-import java.io.IOException;
+import java.util.List;
 
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.GET;
+import retrofit2.http.Path;
+import retrofit2.http.Query;
+import rx.Observable;
 
-public final class InitService {
-    public static final String END_POINT = "https://api.github.com";
+public interface InitService {
+    @GET("/repos/{owner}/{repo}/contributors")
+    Observable<List<Contributor>> contributors(
+            @Path("owner") String owner,
+            @Path("repo") String repo);
+    @GET("/test")
+    Observable<List<Contributor>> test(
+            @Query("owner") String owner,
+            @Query("repo") String repo);
 
-    public static void main(String... args) throws IOException {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(END_POINT)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        GitHub github = retrofit.create(GitHub.class);
-        github.contributors("elzup", "MerryBlue-iOS")
-                .subscribe(contributors -> {
-                });
+    class Contributor {
+        public final String login;
+        public final int contributions;
 
-//        // Create an instance of our GitHub API interface.
-//        GitHub github = retrofit.create(GitHub.class);
-//
-//        // Create a call instance for looking up Retrofit contributors.
-//        Call<List<Contributor>> call = github.contributors("square", "retrofit");
-//
-//        // Fetch and print a list of the contributors to the library.
-//        List<Contributor> contributors = call.execute().body();
-//        for (Contributor contributor : contributors) {
-//            System.out.println(contributor.login + " (" + contributor.contributions + ")");
-//        }
+        public Contributor(String login, int contributions) {
+            this.login = login;
+            this.contributions = contributions;
+        }
     }
+
 }
