@@ -19,6 +19,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -29,8 +30,16 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.elzup.init.models.SessionEntity;
+import com.elzup.init.network.InitService;
+import com.elzup.init.network.InitServiceGenerator;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -49,8 +58,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * TODO: remove after connecting to a real authentication system.
      */
     private static final String[] DUMMY_CREDENTIALS = new String[]{
-            "foo@example.com:hello", "bar@example.com:world"
+            "foo@example.com", "bar@example.com"
     };
+
+    public static final String TAG = "LoginActivity";
+
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
@@ -86,6 +98,25 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                InitService initService = InitServiceGenerator.createService();
+                initService.login("test@elzup.com", "testpass").enqueue(
+                        new Callback<SessionEntity>() {
+                            @Override
+                            public void onResponse(Call<SessionEntity> call, Response<SessionEntity> response) {
+                                SessionEntity sessionEntity = response.body();
+                                Log.i(TAG, String.valueOf(sessionEntity.getId()));
+                                Log.i(TAG, sessionEntity.getEmail());
+                                Log.i(TAG, sessionEntity.getAccessToken());
+                                Log.i(TAG, sessionEntity.getTokenType());
+                            }
+
+                            @Override
+                            public void onFailure(Call<SessionEntity> call, Throwable t) {
+                                t.printStackTrace();
+                            }
+                        });
+
                 attemptLogin();
             }
         });
