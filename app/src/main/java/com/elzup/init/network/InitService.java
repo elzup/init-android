@@ -1,30 +1,27 @@
 package com.elzup.init.network;
 
-import java.util.List;
+import com.elzup.init.models.SessionEntity;
 
+import retrofit2.Call;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.Path;
-import retrofit2.http.Query;
-import rx.Observable;
 
 public interface InitService {
-    @GET("/repos/{owner}/{repo}/contributors")
-    Observable<List<Contributor>> contributors(
-            @Path("owner") String owner,
-            @Path("repo") String repo);
-    @GET("/test")
-    Observable<List<Contributor>> test(
-            @Query("owner") String owner,
-            @Query("repo") String repo);
+    @FormUrlEncoded
+    @POST("/v1/login")
+    Call<SessionEntity> login(
+            @Field("email") String email,
+            @Field("password") String password);
 
-    class Contributor {
-        public final String login;
-        public final int contributions;
+    @POST("/v1/users")
+    Call<SessionEntity> createUser(
+            @Field("email") String email,
+            @Field("password") String password);
 
-        public Contributor(String login, int contributions) {
-            this.login = login;
-            this.contributions = contributions;
-        }
-    }
-
+    @GET("/v1/users/{id}")
+    Call<SessionEntity> getUser(
+            @Path("id") String id);
 }

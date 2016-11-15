@@ -2,23 +2,32 @@ package com.elzup.init;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.annotation.BoolRes;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.view.View;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+
+import com.elzup.init.models.SessionEntity;
+import com.elzup.init.network.InitService;
+import com.elzup.init.network.InitServiceGenerator;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     public static final String PREFERENCES_FILE_NAME = "preference";
+    public static final String TAG = "MainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +53,24 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        InitService initService = InitServiceGenerator.createService();
+        initService.login("test@elzup.com", "testpass").enqueue(
+                new Callback<SessionEntity>() {
+                    @Override
+                    public void onResponse(Call<SessionEntity> call, Response<SessionEntity> response) {
+                        SessionEntity sessionEntity = response.body();
+                        Log.i(TAG, String.valueOf(sessionEntity.getId()));
+                        Log.i(TAG, sessionEntity.getEmail());
+                        Log.i(TAG, sessionEntity.getAccessToken());
+                        Log.i(TAG, sessionEntity.getTokenType());
+                    }
+
+                    @Override
+                    public void onFailure(Call<SessionEntity> call, Throwable t) {
+                        t.printStackTrace();
+                    }
+                });
     }
 
     @Override
