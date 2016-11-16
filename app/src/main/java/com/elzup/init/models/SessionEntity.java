@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 public class SessionEntity {
     private final int id;
-    private final String email;
+    private final String username;
 
     @SerializedName("token_type")
     private final String tokenType;
@@ -12,9 +12,9 @@ public class SessionEntity {
     @SerializedName("access_token")
     private final String accessToken;
 
-    public SessionEntity(int id, String email, String tokenType, String accessToken) {
+    public SessionEntity(int id, String username, String tokenType, String accessToken) {
         this.id = id;
-        this.email = email;
+        this.username = username;
         this.tokenType = tokenType;
         this.accessToken = accessToken;
     }
@@ -23,8 +23,8 @@ public class SessionEntity {
         return id;
     }
 
-    public String getEmail() {
-        return email;
+    public String getUsername() {
+        return username;
     }
 
     public String getTokenType() {

@@ -108,7 +108,7 @@ public class MainActivity extends AppCompatActivity
         if (settings == null) {
             return false;
         }
-        return !settings.getString("token", "").equals("");
+        return settings.contains("token");
     }
 
 }
