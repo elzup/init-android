@@ -1,6 +1,9 @@
 package com.elzup.init.network;
 
+import com.elzup.init.models.MissionEntity;
 import com.elzup.init.models.SessionEntity;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Field;
@@ -22,8 +25,11 @@ public interface InitService {
             @Field("username") String username,
             @Field("password") String password);
 
-    @FormUrlEncoded
     @GET("/v1/users/{id}")
     Call<SessionEntity> getUser(
             @Path("id") String id);
+
+    @GET("/v1/missions")
+    Call<List<MissionEntity>> getMissions();
+
 }

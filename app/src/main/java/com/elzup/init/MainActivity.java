@@ -14,12 +14,22 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.elzup.init.managers.SessionStore;
+import com.elzup.init.models.MissionEntity;
+import com.elzup.init.models.SessionEntity;
+import com.elzup.init.network.InitService;
+import com.elzup.init.network.InitServiceGenerator;
+
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    public static final String PREFERENCES_FILE_NAME = "preference";
     public static final String TAG = "MainActivity";
+    public InitService initService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +39,20 @@ public class MainActivity extends AppCompatActivity
             Intent intent = new Intent(getApplication(), LoginActivity.class);
             startActivity(intent);
         }
+        SessionEntity session = SessionStore.getSession();
+        initService = InitServiceGenerator.createService(session.getAccessToken());
+        initService.getMissions().enqueue(new Callback<List<MissionEntity>>() {
+            @Override
+            public void onResponse(Call<List<MissionEntity>> call, Response<List<MissionEntity>> response) {
+                List<MissionEntity> missions = response.body();
+            }
+
+            @Override
+            public void onFailure(Call<List<MissionEntity>> call, Throwable t) {
+
+            }
+        });
+
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
