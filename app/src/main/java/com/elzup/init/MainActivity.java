@@ -1,8 +1,6 @@
 package com.elzup.init;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -15,6 +13,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.elzup.init.managers.SessionStore;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -24,7 +24,8 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (!isLogin()) {
+        SessionStore.setContext(this);
+        if (!SessionStore.isLogin()) {
             Intent intent = new Intent(getApplication(), LoginActivity.class);
             startActivity(intent);
         }
@@ -101,14 +102,6 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
-    }
-
-    public boolean isLogin() {
-        SharedPreferences settings = getSharedPreferences(PREFERENCES_FILE_NAME, Context.MODE_PRIVATE);
-        if (settings == null) {
-            return false;
-        }
-        return settings.contains("token");
     }
 
 }

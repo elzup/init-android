@@ -3,9 +3,7 @@ package com.elzup.init;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -16,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.elzup.init.managers.SessionStore;
 import com.elzup.init.models.SessionEntity;
 import com.elzup.init.network.InitService;
 import com.elzup.init.network.InitServiceGenerator;
@@ -30,7 +29,6 @@ import retrofit2.Response;
  */
 public class LoginActivity extends AppCompatActivity {
 
-    public static final String PREFERENCES_FILE_NAME = "preference";
     public static final String TAG = "LoginActivity";
 
     // UI references.
@@ -41,6 +39,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        SessionStore.setContext(this);
         setContentView(R.layout.activity_login);
         // Set up the login form.
         mUserNameView = (EditText) findViewById(R.id.user_name);
@@ -57,12 +56,7 @@ public class LoginActivity extends AppCompatActivity {
                         public void onResponse(Call<SessionEntity> call, Response<SessionEntity> response) {
                             SessionEntity sessionEntity = response.body();
 
-                            SharedPreferences settings = getSharedPreferences(PREFERENCES_FILE_NAME, Context.MODE_PRIVATE);
-                            SharedPreferences.Editor editor = settings.edit();
-                            editor.putInt("id", sessionEntity.getId());
-                            editor.putString("username", sessionEntity.getUsername());
-                            editor.putString("token", sessionEntity.getAccessToken());
-                            editor.putString("password", sessionEntity.getAccessToken());
+                            SessionStore.saveSession(sessionEntity);
 
                             Intent intent = new Intent(getApplication(), LoginActivity.class);
                             startActivity(intent);
