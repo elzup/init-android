@@ -43,5 +43,6 @@ public class SessionStore {
         editor.putString("username", sessionEntity.getUsername());
         editor.putString("token", sessionEntity.getAccessToken());
         editor.putString("password", sessionEntity.getAccessToken());
+        editor.apply();
     }
 }

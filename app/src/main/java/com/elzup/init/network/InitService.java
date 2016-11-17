@@ -13,14 +13,16 @@ public interface InitService {
     @FormUrlEncoded
     @POST("/v1/login")
     Call<SessionEntity> login(
-            @Field("email") String email,
+            @Field("username") String username,
             @Field("password") String password);
 
+    @FormUrlEncoded
     @POST("/v1/users")
     Call<SessionEntity> createUser(
-            @Field("email") String email,
+            @Field("username") String username,
             @Field("password") String password);
 
+    @FormUrlEncoded
     @GET("/v1/users/{id}")
     Call<SessionEntity> getUser(
             @Path("id") String id);

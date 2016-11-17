@@ -50,7 +50,7 @@ public class LoginActivity extends AppCompatActivity {
             InitService initService = InitServiceGenerator.createService();
             String username = mUserNameView.getText().toString();
             final String password = KeyUtil.generateRandomCode();
-            initService.login(username, password).enqueue(
+            initService.createUser(username, password).enqueue(
                     new Callback<SessionEntity>() {
                         @Override
                         public void onResponse(Call<SessionEntity> call, Response<SessionEntity> response) {
@@ -58,12 +58,8 @@ public class LoginActivity extends AppCompatActivity {
 
                             SessionStore.saveSession(sessionEntity);
 
-                            Intent intent = new Intent(getApplication(), LoginActivity.class);
+                            Intent intent = new Intent(getApplication(), MainActivity.class);
                             startActivity(intent);
-                            Log.i(TAG, String.valueOf(sessionEntity.getId()));
-                            Log.i(TAG, sessionEntity.getUsername());
-                            Log.i(TAG, sessionEntity.getAccessToken());
-                            Log.i(TAG, sessionEntity.getTokenType());
                         }
 
                         @Override
