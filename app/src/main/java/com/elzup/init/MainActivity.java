@@ -1,12 +1,12 @@
 package com.elzup.init;
 
-import android.content.SharedPreferences;
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.BoolRes;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.view.View;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -15,26 +15,32 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.elzup.init.fragments.MissionsFragment;
+import com.elzup.init.fragments.MissionsRecyclerViewAdapter;
+import com.elzup.init.managers.SessionStore;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    public static final String PREFERENCES_FILE_NAME = "preference";
+    private static final String TAG = MainActivity.class.getSimpleName();
+    private FragmentManager fragmentManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        fragmentManager = getSupportFragmentManager();
+        SessionStore.setContext(this);
+        if (!SessionStore.isLogin()) {
+            Intent intent = new Intent(getApplication(), LoginActivity.class);
+            startActivity(intent);
+        }
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        fab.setOnClickListener(view -> Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show());
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -44,6 +50,7 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        initFragment();
     }
 
     @Override
@@ -103,14 +110,12 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    public Boolean isLogin() {
-        SharedPreferences settings = getSharedPreferences(PREFERENCES_FILE_NAME, 0);
-        if (settings == null) {
-            return false;
-        }
-        int login = (int) settings.getLong("logged-in", 0);
-        if (login == 1) return true;
-        else return false;
+    private void initFragment() {
+        Fragment fragment;
+        fragment = MissionsFragment.newInstance(1);
+        fragmentManager.beginTransaction()
+                .add(R.id.content_main, fragment)
+                .commit();
     }
 
 }
