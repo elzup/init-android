@@ -73,23 +73,19 @@ public class MissionsFragment extends Fragment {
         recyclerView = (RecyclerView) inflater.inflate(R.layout.fragment_missions_list, container, false);
         recyclerView.setAdapter(adapter);
         recyclerView.setHasFixedSize(false);
-        new AsyncTask<String, Void, Void>() {
+        initService.getMissions().enqueue(new Callback<List<MissionEntity>>() {
             @Override
-            protected Void doInBackground(String... params) {
-                try {
-                    Response<List<MissionEntity>> response = initService.getMissions().execute();
-                    missionEntities.addAll(response.body());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                return null;
+            public void onResponse(Call<List<MissionEntity>> call, Response<List<MissionEntity>> response) {
+                List<MissionEntity> newMissions = response.body();
+                missionEntities.addAll(newMissions);
+                adapter.notifyDataSetChanged();
             }
 
             @Override
-            protected void onPostExecute(Void aVoid) {
-                adapter.notifyDataSetChanged();
+            public void onFailure(Call<List<MissionEntity>> call, Throwable t) {
+                t.printStackTrace();
             }
-        }.execute();
+        });
 
         return recyclerView;
     }
