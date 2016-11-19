@@ -6,44 +6,44 @@ import android.databinding.Bindable;
 import com.google.gson.annotations.SerializedName;
 
 public class MissionEntity extends BaseObservable {
-    private static int id;
-    private static String title;
-    private static String description;
+    private int id;
+    private String title;
+    private String description;
     @SerializedName("author_id")
-    private static int authorId;
+    private int authorId;
 
-    public static int getId() {
+    public int getId() {
         return id;
     }
 
-    public static void setId(int id) {
-        MissionEntity.id = id;
+    public void setId(int id) {
+        this.id = id;
     }
 
     @Bindable
-    public static String getTitle() {
+    public String getTitle() {
         return title;
     }
 
-    public static void setTitle(String title) {
-        MissionEntity.title = title;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     @Bindable
-    public static String getDescription() {
+    public String getDescription() {
         return description;
     }
 
-    public static void setDescription(String description) {
-        MissionEntity.description = description;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public static int getAuthorId() {
+    public int getAuthorId() {
         return authorId;
     }
 
-    public static void setAuthorId(int authorId) {
-        MissionEntity.authorId = authorId;
+    public void setAuthorId(int authorId) {
+        this.authorId = authorId;
     }
 
     public MissionEntity(int id, String title, String description, int authorId) {

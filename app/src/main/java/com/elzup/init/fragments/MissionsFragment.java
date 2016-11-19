@@ -67,7 +67,6 @@ public class MissionsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         missionEntities = new ArrayList<>();
-        missionEntities.add(new MissionEntity(0, "hoge", "description", 20));
         adapter = new MissionsRecyclerViewAdapter(missionEntities);
         SessionEntity session = SessionStore.getSession();
         initService = InitServiceGenerator.createService(session.getAccessToken());
