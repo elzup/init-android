@@ -22,6 +22,8 @@ import com.elzup.init.utils.KeyUtil;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
 
 /**
  * A login screen that offers login via email/password.
@@ -49,23 +51,17 @@ public class LoginActivity extends AppCompatActivity {
             InitService initService = InitServiceGenerator.createService();
             String username = mUserNameView.getText().toString();
             final String password = KeyUtil.generateRandomCode();
-            initService.createUser(username, password).enqueue(
-                    new Callback<SessionEntity>() {
+            initService.createUser(username, password).observeOn(AndroidSchedulers.mainThread()).subscribe(
+                    new Action1<SessionEntity>() {
                         @Override
-                        public void onResponse(Call<SessionEntity> call, Response<SessionEntity> response) {
-                            SessionEntity sessionEntity = response.body();
-
+                        public void call(SessionEntity sessionEntity) {
                             SessionStore.saveSession(sessionEntity);
 
                             Intent intent = new Intent(getApplication(), MainActivity.class);
                             startActivity(intent);
                         }
-
-                        @Override
-                        public void onFailure(Call<SessionEntity> call, Throwable t) {
-                            t.printStackTrace();
-                        }
-                    });
+                    }
+            );
 
             attemptLogin();
         });

@@ -8,7 +8,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.elzup.init.MainActivity;
 import com.elzup.init.R;
 import com.elzup.init.managers.SessionStore;
 import com.elzup.init.models.MissionEntity;
@@ -23,6 +25,9 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.schedulers.Schedulers;
 
 /**
  * A fragment representing a list of Items.
@@ -72,21 +77,16 @@ public class MissionsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         recyclerView = (RecyclerView) inflater.inflate(R.layout.fragment_missions_list, container, false);
         recyclerView.setAdapter(adapter);
-        recyclerView.setHasFixedSize(false);
-        initService.getMissions().enqueue(new Callback<List<MissionEntity>>() {
-            @Override
-            public void onResponse(Call<List<MissionEntity>> call, Response<List<MissionEntity>> response) {
-                List<MissionEntity> newMissions = response.body();
-                missionEntities.addAll(newMissions);
-                adapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onFailure(Call<List<MissionEntity>> call, Throwable t) {
-                t.printStackTrace();
-            }
-        });
-
+        initService.getMissions()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<List<MissionEntity>>() {
+                    @Override
+                    public void call(List<MissionEntity> items) {
+                        missionEntities.addAll(items);
+                        adapter.notifyDataSetChanged();
+                    }
+                });
         return recyclerView;
     }
 
