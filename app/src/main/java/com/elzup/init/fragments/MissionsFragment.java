@@ -6,7 +6,6 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -19,6 +18,7 @@ import com.elzup.init.network.InitServiceGenerator;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
@@ -75,8 +75,14 @@ public class MissionsFragment extends Fragment {
                 new MissionRecyclerClickListener(getActivity(), new MissionRecyclerClickListener.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
+                        Log.d(TAG, "clicked");
                         MissionEntity mission = missionEntities.get(position);
-                        Log.i(TAG, "Clicked!!: " + mission.getTitle());
+                        getActivity().getSupportFragmentManager().beginTransaction().replace(
+                                R.id.content_main,
+                                MissionItemDetailsFragment.newInstance(mission.getId()),
+                                MissionItemDetailsFragment.TAG
+                        ).addToBackStack(TAG).commit();
+                        Log.d(TAG, "pushed");
                     }
                 })
         );

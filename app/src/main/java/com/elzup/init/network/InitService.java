@@ -31,4 +31,8 @@ public interface InitService {
 
     @GET("/v1/missions")
     Observable<List<MissionEntity>> getMissions();
+
+    @GET("/v1/missions/{id}")
+    Observable<MissionEntity> getMission(@Path("id") int id);
+
 }
