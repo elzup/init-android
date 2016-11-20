@@ -1,16 +1,15 @@
 package com.elzup.init.fragments;
 
 import android.content.Context;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
-import com.elzup.init.MainActivity;
 import com.elzup.init.R;
 import com.elzup.init.managers.SessionStore;
 import com.elzup.init.models.MissionEntity;
@@ -18,13 +17,9 @@ import com.elzup.init.models.SessionEntity;
 import com.elzup.init.network.InitService;
 import com.elzup.init.network.InitServiceGenerator;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
@@ -76,6 +71,15 @@ public class MissionsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         recyclerView = (RecyclerView) inflater.inflate(R.layout.fragment_missions_list, container, false);
         recyclerView.setAdapter(adapter);
+        recyclerView.addOnItemTouchListener(
+                new MissionRecyclerClickListener(getActivity(), new MissionRecyclerClickListener.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        MissionEntity mission = missionEntities.get(position);
+                        Log.i(TAG, "Clicked!!: " + mission.getTitle());
+                    }
+                })
+        );
         initService.getMissions()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

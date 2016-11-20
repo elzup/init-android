@@ -11,6 +11,8 @@ public class MissionEntity extends BaseObservable {
     private String description;
     @SerializedName("author_id")
     private int authorId;
+    @SerializedName("is_completed")
+    private boolean isCompleted;
 
     public int getId() {
         return id;
@@ -46,10 +48,19 @@ public class MissionEntity extends BaseObservable {
         this.authorId = authorId;
     }
 
-    public MissionEntity(int id, String title, String description, int authorId) {
+    public boolean isCompleted() {
+        return isCompleted;
+    }
+
+    public void setCompleted(boolean completed) {
+        isCompleted = completed;
+    }
+
+    public MissionEntity(int id, String title, String description, int authorId, boolean isCompleted) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.authorId = authorId;
+        this.isCompleted = isCompleted;
     }
 }
