@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -81,8 +80,7 @@ public class MissionsFragment extends Fragment implements OnRecyclerListener {
     @Override
     public void onRecyclerClicked(View v, int position) {
         MissionEntity mission = missionEntities.get(position);
-        Log.d(TAG, "Clicked: " + mission.getId());
-        getActivity().getSupportFragmentManager().beginTransaction().add(
+        getActivity().getSupportFragmentManager().beginTransaction().replace(
                 R.id.content_main,
                 MissionDetailFragment.newInstance(mission.getId())
         ).addToBackStack(TAG).commit();

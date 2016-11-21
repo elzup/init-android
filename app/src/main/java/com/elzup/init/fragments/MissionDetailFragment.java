@@ -65,6 +65,7 @@ public class MissionDetailFragment extends Fragment {
         // Inflate the layout for this fragment
         binding = FragmentMissionDetailBinding.bind(getView());
         binding.setMission(new MissionEntity(99, "ゆるゆり", "This is Description !!!!!", 10, false));
+//        binding.executePendingBindings();
 
         getActivity().setTitle("ミッション詳細");
         SessionEntity session = SessionStore.getSession();
@@ -76,8 +77,7 @@ public class MissionDetailFragment extends Fragment {
                 .subscribe(new Action1<MissionEntity>() {
                     @Override
                     public void call(MissionEntity missionEntity) {
-                        Log.d(TAG, missionEntity.getTitle());
-//                        binding.setMission(missionEntity);
+                        binding.setMission(missionEntity);
                     }
                 });
     }

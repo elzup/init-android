@@ -1,36 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tool="http://schemas.android.com/tools">
     <data>
         <variable
             name="mission"
             type="com.elzup.init.models.MissionEntity" />
         <import type="android.view.View" />
     </data>
-    <FrameLayout
-        xmlns:tools="http://schemas.android.com/tools"
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/mission_detail"
-        tools:context="com.elzup.init.fragments.MissionDetailFragment">
+        android:orientation="vertical">
 
-        <RelativeLayout
+        <TextView
+            android:text="@{mission.title}"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            tool:text="zannryuu"/>
 
-            <TextView
-                android:text="@{mission.title}"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+        <TextView
+            android:text="@{mission.description}"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tool:text="description"/>
 
-            <TextView
-                android:text="@{mission.description}"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+        <TextView
+            android:text="test"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tool:text="test"/>
 
-            <TextView
-                android:text="test"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </RelativeLayout>
-    </FrameLayout>
+    </LinearLayout>
 </layout>
