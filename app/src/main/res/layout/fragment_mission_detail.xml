@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tool="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="mission"
+            type="com.elzup.init.models.MissionEntity" />
+        <import type="android.view.View" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:text="@{mission.title}"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tool:text="zannryuu"/>
+
+        <TextView
+            android:text="@{mission.description}"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tool:text="description"/>
+
+        <TextView
+            android:text="test"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tool:text="test"/>
+
+    </LinearLayout>
+</layout>

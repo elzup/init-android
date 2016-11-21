@@ -16,7 +16,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.elzup.init.fragments.MissionsFragment;
-import com.elzup.init.fragments.MissionsRecyclerViewAdapter;
 import com.elzup.init.managers.SessionStore;
 
 public class MainActivity extends AppCompatActivity
