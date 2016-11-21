@@ -18,19 +18,12 @@ import com.elzup.init.network.InitServiceGenerator;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
-/**
- * A fragment representing a list of Items.
- * <p/>
- * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
- * interface.
- */
-public class MissionsFragment extends Fragment {
+public class MissionsFragment extends Fragment implements OnRecyclerListener {
 
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
@@ -62,7 +55,7 @@ public class MissionsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         missionEntities = new ArrayList<>();
-        adapter = new MissionsRecyclerViewAdapter(missionEntities);
+        adapter = new MissionsRecyclerViewAdapter(missionEntities, this);
         SessionEntity session = SessionStore.getSession();
         initService = InitServiceGenerator.createService(session.getAccessToken());
     }
@@ -71,21 +64,6 @@ public class MissionsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         recyclerView = (RecyclerView) inflater.inflate(R.layout.fragment_missions_list, container, false);
         recyclerView.setAdapter(adapter);
-        recyclerView.addOnItemTouchListener(
-                new MissionRecyclerClickListener(getActivity(), new MissionRecyclerClickListener.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(View view, int position) {
-                        Log.d(TAG, "clicked");
-                        MissionEntity mission = missionEntities.get(position);
-                        getActivity().getSupportFragmentManager().beginTransaction().replace(
-                                R.id.content_main,
-                                MissionItemDetailsFragment.newInstance(mission.getId()),
-                                MissionItemDetailsFragment.TAG
-                        ).addToBackStack(TAG).commit();
-                        Log.d(TAG, "pushed");
-                    }
-                })
-        );
         initService.getMissions()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -109,18 +87,14 @@ public class MissionsFragment extends Fragment {
         super.onDetach();
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnListFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onListFragmentInteraction(MissionEntity item);
+    @Override
+    public void onRecyclerClicked(View v, int position) {
+        MissionEntity mission = missionEntities.get(position);
+        Log.d(TAG, "Clicked: " + mission.getId());
+        getActivity().getSupportFragmentManager().beginTransaction().replace(
+                R.id.content_main,
+                MissionItemDetailsFragment.newInstance(mission.getId()),
+                MissionItemDetailsFragment.TAG
+        ).addToBackStack(TAG).commit();
     }
 }

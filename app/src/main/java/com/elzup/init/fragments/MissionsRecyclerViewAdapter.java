@@ -18,9 +18,11 @@ public class MissionsRecyclerViewAdapter extends RecyclerView.Adapter<MissionsRe
 
     private static final String TAG = MissionsRecyclerViewAdapter.class.getSimpleName();
     private List<MissionEntity> items;
+    private OnRecyclerListener listener;
 
-    public MissionsRecyclerViewAdapter(List<MissionEntity> items) {
+    public MissionsRecyclerViewAdapter(List<MissionEntity> items, OnRecyclerListener listener) {
         this.items = items;
+        this.listener = listener;
     }
 
     @Override
@@ -34,6 +36,12 @@ public class MissionsRecyclerViewAdapter extends RecyclerView.Adapter<MissionsRe
     public void onBindViewHolder(ViewHolder holder, int position) {
         MissionEntity item = items.get(position);
         holder.getBinding().setVariable(BR.mission, item);
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onRecyclerClicked(v, position);
+            }
+        });
         holder.getBinding().executePendingBindings();
     }
 
@@ -53,5 +61,10 @@ public class MissionsRecyclerViewAdapter extends RecyclerView.Adapter<MissionsRe
         public ViewDataBinding getBinding() {
             return binding;
         }
+    }
+
+    public interface OnMissionClick {
+        // TODO: Update argument type and name
+        public void onMissionClick(MissionEntity item);
     }
 }

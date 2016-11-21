@@ -4,6 +4,10 @@
         <variable
             name="mission"
             type="com.elzup.init.models.MissionEntity" />
+        <variable
+            name="fragment"
+            type="com.elzup.init.fragments.MissionsFragment" />
+
         <import type="android.view.View" />
     </data>
     <RelativeLayout
