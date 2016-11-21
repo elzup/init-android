@@ -1,34 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
-    <data>
-        <variable
-            name="mission"
-            type="com.elzup.init.models.MissionEntity" />
-        <variable
-            name="fragment"
-            type="com.elzup.init.fragments.MissionsFragment" />
-
-        <import type="android.view.View" />
-    </data>
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/text_margin"
-            android:textAppearance="?attr/textAppearanceListItem"
-            android:text="@{mission.title}" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:visibility="@{mission.isCompleted ? View.VISIBLE : View.INVISIBLE}"
-            android:src="@drawable/ic_check_box" />
-
-    </RelativeLayout>
-</layout>
+<android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/list"
+    android:name="com.elzup.init.fragments.MissionsFragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginLeft="16dp"
+    android:layout_marginRight="16dp"
+    app:layoutManager="LinearLayoutManager"
+    tools:context="com.elzup.init.fragments.MissionsFragment"
+    tools:listitem="@layout/fragment_missions_item" />

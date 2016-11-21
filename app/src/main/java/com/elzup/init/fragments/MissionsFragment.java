@@ -31,7 +31,7 @@ public class MissionsFragment extends Fragment implements OnRecyclerListener {
     private InitService initService;
     private static final String TAG = MissionsFragment.class.getSimpleName();
     private List<MissionEntity> missionEntities;
-    private MissionsRecyclerViewAdapter adapter;
+    private MissionsCellAdapter adapter;
     private RecyclerView recyclerView;
 
     /**
@@ -55,25 +55,16 @@ public class MissionsFragment extends Fragment implements OnRecyclerListener {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         missionEntities = new ArrayList<>();
-        adapter = new MissionsRecyclerViewAdapter(missionEntities, this);
+        adapter = new MissionsCellAdapter(missionEntities, this);
         SessionEntity session = SessionStore.getSession();
         initService = InitServiceGenerator.createService(session.getAccessToken());
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        recyclerView = (RecyclerView) inflater.inflate(R.layout.fragment_missions_list, container, false);
+        recyclerView = (RecyclerView) inflater.inflate(R.layout.fragment_missions, container, false);
         recyclerView.setAdapter(adapter);
-        initService.getMissions()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<List<MissionEntity>>() {
-                    @Override
-                    public void call(List<MissionEntity> items) {
-                        missionEntities.addAll(items);
-                        adapter.notifyDataSetChanged();
-                    }
-                });
+        initData();
         return recyclerView;
     }
 
@@ -91,10 +82,25 @@ public class MissionsFragment extends Fragment implements OnRecyclerListener {
     public void onRecyclerClicked(View v, int position) {
         MissionEntity mission = missionEntities.get(position);
         Log.d(TAG, "Clicked: " + mission.getId());
-        getActivity().getSupportFragmentManager().beginTransaction().replace(
+        getActivity().getSupportFragmentManager().beginTransaction().add(
                 R.id.content_main,
-                MissionItemDetailsFragment.newInstance(mission.getId()),
-                MissionItemDetailsFragment.TAG
+                MissionDetailFragment.newInstance(mission.getId())
         ).addToBackStack(TAG).commit();
+    }
+
+    private void initData() {
+        if (!missionEntities.isEmpty()) {
+            return;
+        }
+        initService.getMissions()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<List<MissionEntity>>() {
+                    @Override
+                    public void call(List<MissionEntity> items) {
+                        missionEntities.addAll(items);
+                        adapter.notifyDataSetChanged();
+                    }
+                });
     }
 }

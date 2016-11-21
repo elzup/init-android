@@ -14,13 +14,13 @@ import com.elzup.init.models.MissionEntity;
 import java.util.List;
 
 
-public class MissionsRecyclerViewAdapter extends RecyclerView.Adapter<MissionsRecyclerViewAdapter.ViewHolder> {
+public class MissionsCellAdapter extends RecyclerView.Adapter<MissionsCellAdapter.ViewHolder> {
 
-    private static final String TAG = MissionsRecyclerViewAdapter.class.getSimpleName();
+    private static final String TAG = MissionsCellAdapter.class.getSimpleName();
     private List<MissionEntity> items;
     private OnRecyclerListener listener;
 
-    public MissionsRecyclerViewAdapter(List<MissionEntity> items, OnRecyclerListener listener) {
+    public MissionsCellAdapter(List<MissionEntity> items, OnRecyclerListener listener) {
         this.items = items;
         this.listener = listener;
     }
@@ -28,7 +28,7 @@ public class MissionsRecyclerViewAdapter extends RecyclerView.Adapter<MissionsRe
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // DataBinding
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_missions, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_missions_item, parent, false);
         return new ViewHolder(v);
     }
 

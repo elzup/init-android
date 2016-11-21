@@ -1,8 +1,6 @@
 package com.elzup.init.fragments;
 
 import android.content.Context;
-import android.databinding.DataBindingUtil;
-import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,9 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.elzup.init.BR;
 import com.elzup.init.R;
-import com.elzup.init.databinding.FragmentDetailsItemMissionBinding;
+import com.elzup.init.databinding.FragmentMissionDetailBinding;
 import com.elzup.init.managers.SessionStore;
 import com.elzup.init.models.MissionEntity;
 import com.elzup.init.models.SessionEntity;
@@ -24,14 +21,14 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
-public class MissionItemDetailsFragment extends Fragment {
-    public static final String TAG = MissionItemDetailsFragment.class.getSimpleName();
+public class MissionDetailFragment extends Fragment {
+    public static final String TAG = MissionDetailFragment.class.getSimpleName();
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String MISSION_ID = "missionId";
-    private FragmentDetailsItemMissionBinding binding;
+    private FragmentMissionDetailBinding binding;
 
-    public MissionItemDetailsFragment() {
+    public MissionDetailFragment() {
         // Required empty public constructor
     }
 
@@ -42,8 +39,8 @@ public class MissionItemDetailsFragment extends Fragment {
      * @param missionId Mission id
      * @return A new instance of fragment MissionItemDetailsFragment.
      */
-    public static MissionItemDetailsFragment newInstance(int missionId) {
-        MissionItemDetailsFragment fragment = new MissionItemDetailsFragment();
+    public static MissionDetailFragment newInstance(int missionId) {
+        MissionDetailFragment fragment = new MissionDetailFragment();
         Bundle args = new Bundle();
         args.putInt(MISSION_ID, missionId);
         fragment.setArguments(args);
@@ -59,14 +56,14 @@ public class MissionItemDetailsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         container.removeAllViews();
-        return inflater.inflate(R.layout.fragment_details_item_mission, container, false);
+        return inflater.inflate(R.layout.fragment_mission_detail, container, false);
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         // Inflate the layout for this fragment
-        binding = FragmentDetailsItemMissionBinding.bind(getView());
+        binding = FragmentMissionDetailBinding.bind(getView());
         binding.setMission(new MissionEntity(99, "ゆるゆり", "This is Description !!!!!", 10, false));
 
         getActivity().setTitle("ミッション詳細");
