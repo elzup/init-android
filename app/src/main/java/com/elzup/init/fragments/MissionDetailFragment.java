@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -69,8 +68,9 @@ public class MissionDetailFragment extends Fragment {
         binding.setMission(new MissionEntity(99, "ゆるゆり", "This is Description !!!!!", 10, false));
         MainActivity activity = (MainActivity) getActivity();
         activity.setTitle("ミッション詳細");
-        activity.getFloatButton().setImageDrawable(getResources().getDrawable(R.drawable.ic_action_add));
-        activity.getFloatButton().setOnClickListener(view -> Snackbar.make(view, "Check", Snackbar.LENGTH_LONG)
+        activity.getFabPlus().setVisibility(View.INVISIBLE);
+        activity.getFabCheck().setVisibility(View.VISIBLE);
+        activity.getFabCheck().setOnClickListener(view -> Snackbar.make(view, "Check", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show());
 //        binding.executePendingBindings();
 

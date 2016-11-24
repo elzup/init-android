@@ -94,8 +94,9 @@ public class MissionsFragment extends Fragment implements OnRecyclerListener {
         super.onActivityCreated(savedInstanceState);
         MainActivity activity = (MainActivity) getActivity();
         activity.setTitle("ミッション一覧");
-        activity.getFloatButton().setImageDrawable(getResources().getDrawable(R.drawable.ic_action_add));
-        activity.getFloatButton().setOnClickListener(view -> Snackbar.make(view, "Add action.", Snackbar.LENGTH_LONG)
+        activity.getFabCheck().setVisibility(View.INVISIBLE);
+        activity.getFabPlus().setVisibility(View.VISIBLE);
+        activity.getFabPlus().setOnClickListener(view -> Snackbar.make(view, "Add action.", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show());
     }
 
