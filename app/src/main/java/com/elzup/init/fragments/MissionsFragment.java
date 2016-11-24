@@ -2,12 +2,15 @@ package com.elzup.init.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.elzup.init.MainActivity;
 import com.elzup.init.R;
 import com.elzup.init.managers.SessionStore;
 import com.elzup.init.models.MissionEntity;
@@ -84,6 +87,16 @@ public class MissionsFragment extends Fragment implements OnRecyclerListener {
                 R.id.content_main,
                 MissionDetailFragment.newInstance(mission.getId())
         ).addToBackStack(TAG).commit();
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        MainActivity activity = (MainActivity) getActivity();
+        activity.setTitle("ミッション一覧");
+        activity.getFloatButton().setImageDrawable(getResources().getDrawable(R.drawable.ic_action_add));
+        activity.getFloatButton().setOnClickListener(view -> Snackbar.make(view, "Add action.", Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show());
     }
 
     private void initData() {
