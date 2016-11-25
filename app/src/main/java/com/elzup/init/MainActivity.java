@@ -24,14 +24,9 @@ public class MainActivity extends AppCompatActivity
     private static final String TAG = MainActivity.class.getSimpleName();
     private FragmentManager fragmentManager;
     private FloatingActionButton fabPlus;
-    private FloatingActionButton fabCheck;
 
     public FloatingActionButton getFabPlus() {
         return this.fabPlus;
-    }
-
-    public FloatingActionButton getFabCheck() {
-        return this.fabCheck;
     }
 
     @Override
@@ -48,7 +43,6 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         this.fabPlus = (FloatingActionButton) findViewById(R.id.fab_plus);
-        this.fabCheck = (FloatingActionButton) findViewById(R.id.fab_check);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(

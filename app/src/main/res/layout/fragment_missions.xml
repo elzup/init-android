@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<android.support.v7.widget.RecyclerView xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/list"
     android:name="com.elzup.init.fragments.MissionsFragment"
     android:layout_width="match_parent"
@@ -11,3 +11,4 @@
     app:layoutManager="LinearLayoutManager"
     tools:context="com.elzup.init.fragments.MissionsFragment"
     tools:listitem="@layout/fragment_missions_item" />
+
