@@ -3,12 +3,14 @@ package com.elzup.init.fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.elzup.init.MainActivity;
 import com.elzup.init.R;
 import com.elzup.init.databinding.FragmentMissionDetailBinding;
 import com.elzup.init.managers.SessionStore;
@@ -27,6 +29,9 @@ public class MissionDetailFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String MISSION_ID = "missionId";
     private FragmentMissionDetailBinding binding;
+    private MainActivity activity;
+    private FloatingActionButton fabComplete;
+    private FloatingActionButton fabCompleted;
 
     public MissionDetailFragment() {
         // Required empty public constructor
@@ -65,9 +70,14 @@ public class MissionDetailFragment extends Fragment {
         // Inflate the layout for this fragment
         binding = FragmentMissionDetailBinding.bind(getView());
         binding.setMission(new MissionEntity(99, "ゆるゆり", "This is Description !!!!!", 10, false));
+        activity = (MainActivity) getActivity();
+        activity.setTitle("ミッション詳細");
+        // activity.getFabPlus().setVisibility(View.INVISIBLE);
+        // activity.getFabCheck().setVisibility(View.VISIBLE);
+        // activity.getFabCheck().setOnClickListener(view -> Snackbar.make(view, "Check", Snackbar.LENGTH_LONG)
+        //         .setAction("Action", null).show());
 //        binding.executePendingBindings();
 
-        getActivity().setTitle("ミッション詳細");
         SessionEntity session = SessionStore.getSession();
         InitService initService = InitServiceGenerator.createService(session.getAccessToken());
         int missionId = getArguments().getInt(MISSION_ID);
@@ -80,6 +90,10 @@ public class MissionDetailFragment extends Fragment {
                         binding.setMission(missionEntity);
                     }
                 });
+    }
+
+    private void toggleCompleted() {
+
     }
 
     @Override

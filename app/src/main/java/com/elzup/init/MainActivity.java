@@ -23,6 +23,11 @@ public class MainActivity extends AppCompatActivity
 
     private static final String TAG = MainActivity.class.getSimpleName();
     private FragmentManager fragmentManager;
+    private FloatingActionButton fabPlus;
+
+    public FloatingActionButton getFabPlus() {
+        return this.fabPlus;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,9 +42,7 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(view -> Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show());
+        this.fabPlus = (FloatingActionButton) findViewById(R.id.fab_plus);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
