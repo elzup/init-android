@@ -4,11 +4,13 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
+import android.view.animation.RotateAnimation;
 
 import com.elzup.init.MainActivity;
 import com.elzup.init.R;
@@ -32,6 +34,8 @@ public class MissionDetailFragment extends Fragment {
     private MainActivity activity;
     private FloatingActionButton fabComplete;
     private FloatingActionButton fabCompleted;
+    private MissionEntity mission;
+    public boolean isSync;
 
     public MissionDetailFragment() {
         // Required empty public constructor
@@ -55,6 +59,7 @@ public class MissionDetailFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.isSync = false;
     }
 
     @Override
@@ -69,7 +74,9 @@ public class MissionDetailFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         // Inflate the layout for this fragment
         binding = FragmentMissionDetailBinding.bind(getView());
-        binding.setMission(new MissionEntity(99, "ゆるゆり", "This is Description !!!!!", 10, false));
+        this.mission = new MissionEntity(99, "ゆるゆり", "This is Description !!!!!", 10, false);
+        binding.setMission(this.mission);
+        binding.setFragment(this);
         activity = (MainActivity) getActivity();
         activity.setTitle("ミッション詳細");
         // activity.getFabPlus().setVisibility(View.INVISIBLE);
@@ -77,6 +84,10 @@ public class MissionDetailFragment extends Fragment {
         // activity.getFabCheck().setOnClickListener(view -> Snackbar.make(view, "Check", Snackbar.LENGTH_LONG)
         //         .setAction("Action", null).show());
 //        binding.executePendingBindings();
+
+        FloatingActionButton favicon = (FloatingActionButton) getActivity().findViewById(R.id.indicator);
+
+        favicon.startAnimation(AnimationUtils.loadAnimation(this.getActivity(), R.anim.rotate_forward));
 
         SessionEntity session = SessionStore.getSession();
         InitService initService = InitServiceGenerator.createService(session.getAccessToken());
@@ -87,13 +98,10 @@ public class MissionDetailFragment extends Fragment {
                 .subscribe(new Action1<MissionEntity>() {
                     @Override
                     public void call(MissionEntity missionEntity) {
-                        binding.setMission(missionEntity);
+                        mission = missionEntity;
+                        binding.setMission(mission);
                     }
                 });
-    }
-
-    private void toggleCompleted() {
-
     }
 
     @Override
@@ -104,5 +112,13 @@ public class MissionDetailFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
+    }
+
+    public void onCompleteButtonClick(View view) {
+        if (isSync) { return; }
+        isSync = true;
+        this.mission.setCompleted(!this.mission.isCompleted());
+        binding.setMission(mission);
+        Log.d(TAG, "toggleCompleted");
     }
 }
