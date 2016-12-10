@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -24,6 +25,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
+import rx.schedulers.Schedulers;
 
 /**
  * A login screen that offers login via email/password.
@@ -51,7 +53,9 @@ public class LoginActivity extends AppCompatActivity {
             InitService initService = InitServiceGenerator.createService();
             String username = mUserNameView.getText().toString();
             final String password = KeyUtil.generateRandomCode();
-            initService.createUser(username, password).observeOn(AndroidSchedulers.mainThread()).subscribe(
+            initService.createUser(username, password).observeOn(AndroidSchedulers.mainThread())
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread()).subscribe(
                     new Action1<SessionEntity>() {
                         @Override
                         public void call(SessionEntity sessionEntity) {
@@ -60,8 +64,9 @@ public class LoginActivity extends AppCompatActivity {
                             Intent intent = new Intent(getApplication(), MainActivity.class);
                             startActivity(intent);
                         }
-                    }
-            );
+                    }, throwable -> {
+                        Log.e(TAG, "initData: ", throwable);
+                    });
 
             attemptLogin();
         });

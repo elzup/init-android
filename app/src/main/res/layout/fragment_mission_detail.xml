@@ -4,9 +4,14 @@
     xmlns:tool="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="mission"
             type="com.elzup.init.models.MissionEntity" />
+
+        <variable
+            name="fragment"
+            type="com.elzup.init.fragments.MissionDetailFragment" />
 
         <import type="android.view.View" />
     </data>
@@ -21,9 +26,9 @@
             android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="20dp"
             android:layout_marginBottom="10dp"
-            android:text="ミッションタイトル" />
+            android:text="ミッションタイトル"
+            android:textSize="20dp" />
 
         <TextView
             android:id="@+id/description"
@@ -33,14 +38,46 @@
             android:text="@{mission.description}"
             tool:text="説明文説明文説明文説明文説明文説明文説明文説明文説明文説明文説明文説明文" />
 
-
         <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab_check"
+            android:id="@+id/indicator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
             android:layout_margin="6dp"
-            app:srcCompat="@drawable/ic_check" />
+            android:backgroundTint="@android:color/darker_gray"
+            android:onClick="@{fragment.onCompleteButtonClick}"
+            android:tint="@android:color/black"
+            android:visibility="@{fragment.isSync ? View.VISIBLE : View.INVISIBLE}"
+            app:borderWidth="0dp"
+            app:srcCompat="@drawable/ic_autorenew_black_24dp" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/complete_mission"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_margin="6dp"
+            android:backgroundTint="@android:color/white"
+            android:onClick="@{fragment.onCompleteButtonClick}"
+            android:tint="@android:color/darker_gray"
+            android:visibility="@{fragment.isSync ? View.INVISIBLE : (!mission.isCompleted ? View.VISIBLE : View.INVISIBLE)}"
+            app:borderWidth="0dp"
+            app:srcCompat="@drawable/ic_check_my" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/mission_uncomplete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_margin="6dp"
+            android:backgroundTint="@android:color/white"
+            android:onClick="@{fragment.onUncompleteButtonClick}"
+            android:tint="@android:color/holo_green_dark"
+            android:visibility="@{fragment.isSync ? View.INVISIBLE : (mission.isCompleted ? View.VISIBLE : View.INVISIBLE)}"
+            app:borderWidth="0dp"
+            app:srcCompat="@drawable/ic_check_my" />
     </RelativeLayout>
 </layout>
