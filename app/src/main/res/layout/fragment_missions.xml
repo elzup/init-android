@@ -6,8 +6,6 @@
     android:name="com.elzup.init.fragments.MissionsFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginLeft="16dp"
-    android:layout_marginRight="16dp"
     app:layoutManager="LinearLayoutManager"
     tools:context="com.elzup.init.fragments.MissionsFragment"
     tools:listitem="@layout/fragment_missions_item" />
