@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -87,10 +88,11 @@ public class MissionsFragment extends Fragment implements OnRecyclerListener {
     public void onRecyclerClicked(View v, int position) {
         MissionEntity mission = missionEntities.get(position);
         activity.getFabPlus().setVisibility(View.INVISIBLE);
-        getActivity().getSupportFragmentManager().beginTransaction().replace(
-                R.id.content_main,
-                MissionDetailFragment.newInstance(mission.getId())
-        ).addToBackStack(TAG).commit();
+        FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.content_main, MissionDetailFragment.newInstance(mission.getId()));
+        ft.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right,
+                R.anim.slide_in_left, R.anim.slide_out_right);
+        ft.addToBackStack(TAG).commit();
     }
 
     @Override
