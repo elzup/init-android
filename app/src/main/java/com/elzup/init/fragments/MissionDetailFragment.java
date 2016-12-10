@@ -79,11 +79,6 @@ public class MissionDetailFragment extends Fragment {
         binding.setFragment(this);
         activity = (MainActivity) getActivity();
         activity.setTitle("ミッション詳細");
-        // activity.getFabPlus().setVisibility(View.INVISIBLE);
-        // activity.getFabCheck().setVisibility(View.VISIBLE);
-        // activity.getFabCheck().setOnClickListener(view -> Snackbar.make(view, "Check", Snackbar.LENGTH_LONG)
-        //         .setAction("Action", null).show());
-//        binding.executePendingBindings();
 
         FloatingActionButton favicon = (FloatingActionButton) getActivity().findViewById(R.id.indicator);
 
