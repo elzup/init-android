@@ -62,7 +62,7 @@
             android:backgroundTint="@android:color/white"
             android:onClick="@{fragment.onCompleteButtonClick}"
             android:tint="@android:color/darker_gray"
-            android:visibility="@{fragment.isSync ? View.INVISIBLE : (mission.isCompleted ? View.INVISIBLE : View.VISIBLE)}"
+            android:visibility="@{fragment.isSync ? View.INVISIBLE : (!mission.isCompleted ? View.VISIBLE : View.INVISIBLE)}"
             app:borderWidth="0dp"
             app:srcCompat="@drawable/ic_check_my" />
 
@@ -74,9 +74,9 @@
             android:layout_alignParentRight="true"
             android:layout_margin="6dp"
             android:backgroundTint="@android:color/white"
-            android:onClick="@{fragment.onCompleteButtonClick}"
+            android:onClick="@{fragment.onUncompleteButtonClick}"
             android:tint="@android:color/holo_green_dark"
-            android:visibility="@{fragment.isSync ? View.INVISIBLE : (!mission.isCompleted ? View.INVISIBLE : View.VISIBLE)}"
+            android:visibility="@{fragment.isSync ? View.INVISIBLE : (mission.isCompleted ? View.VISIBLE : View.INVISIBLE)}"
             app:borderWidth="0dp"
             app:srcCompat="@drawable/ic_check_my" />
     </RelativeLayout>

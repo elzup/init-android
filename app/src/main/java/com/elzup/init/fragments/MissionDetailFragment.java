@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
-import android.view.animation.RotateAnimation;
 
 import com.elzup.init.MainActivity;
 import com.elzup.init.R;
@@ -22,7 +21,6 @@ import com.elzup.init.network.InitService;
 import com.elzup.init.network.InitServiceGenerator;
 
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
 public class MissionDetailFragment extends Fragment {
@@ -35,6 +33,7 @@ public class MissionDetailFragment extends Fragment {
     private FloatingActionButton fabComplete;
     private FloatingActionButton fabCompleted;
     private MissionEntity mission;
+    private InitService initService;
     public boolean isSync;
 
     public MissionDetailFragment() {
@@ -60,6 +59,8 @@ public class MissionDetailFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.isSync = false;
+        SessionEntity session = SessionStore.getSession();
+        initService = InitServiceGenerator.createService(session.getAccessToken());
     }
 
     @Override
@@ -90,12 +91,11 @@ public class MissionDetailFragment extends Fragment {
         initService.getMission(missionId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<MissionEntity>() {
-                    @Override
-                    public void call(MissionEntity missionEntity) {
-                        mission = missionEntity;
-                        binding.setMission(mission);
-                    }
+                .subscribe(missionEntity -> {
+                    mission = missionEntity;
+                    binding.setMission(mission);
+                }, throwable -> {
+                    Log.e(TAG, "onActivityCreated: ", throwable);
                 });
     }
 
@@ -112,8 +112,30 @@ public class MissionDetailFragment extends Fragment {
     public void onCompleteButtonClick(View view) {
         if (isSync) { return; }
         isSync = true;
-        this.mission.setCompleted(!this.mission.isCompleted());
-        binding.setMission(mission);
-        Log.d(TAG, "toggleCompleted");
+        initService.postMissionComplete(mission.getId())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(completeEntity -> {
+                    this.mission.setCompleted(true);
+                    isSync = false;
+                    binding.setMission(mission);
+                }, throwable -> {
+                    Log.e(TAG, "onCompleteButtonClick: ", throwable);
+                });
+    }
+
+    public void onUncompleteButtonClick(View view) {
+        if (isSync) { return; }
+        isSync = true;
+        initService.postMissionUncomplete(mission.getId())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(completeEntity -> {
+                    this.mission.setCompleted(false);
+                    isSync = false;
+                    binding.setMission(mission);
+                }, throwable -> {
+                    Log.e(TAG, "onUncompleteButtonClick: ", throwable);
+                });
     }
 }

@@ -1,5 +1,6 @@
 package com.elzup.init.network;
 
+import com.elzup.init.models.CompleteEntity;
 import com.elzup.init.models.MissionEntity;
 import com.elzup.init.models.SessionEntity;
 
@@ -35,4 +36,9 @@ public interface InitService {
     @GET("/v1/missions/{id}")
     Observable<MissionEntity> getMission(@Path("id") int id);
 
+    @POST("/v1/missions/{id}/complete")
+    Observable<CompleteEntity> postMissionComplete(@Path("id") int id);
+
+    @POST("/v1/missions/{id}/uncomplete")
+    Observable<CompleteEntity> postMissionUncomplete(@Path("id") int id);
 }
