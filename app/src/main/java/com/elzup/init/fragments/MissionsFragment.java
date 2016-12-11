@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -68,8 +69,8 @@ public class MissionsFragment extends Fragment implements OnRecyclerListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         recyclerView = (RecyclerView) inflater.inflate(R.layout.fragment_missions, container, false);
-        // recyclerView = (RecyclerView) inflater.inflate(R.layout.fragment_missions, container, false);
         recyclerView.setAdapter(adapter);
+        // HACK: 再描画時は差分のみ表示したい
         initData();
         return recyclerView;
     }
@@ -105,9 +106,7 @@ public class MissionsFragment extends Fragment implements OnRecyclerListener {
     }
 
     private void initData() {
-        if (!missionEntities.isEmpty()) {
-            return;
-        }
+        missionEntities.clear();
         initService.getMissions()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
