@@ -14,7 +14,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
+import com.elzup.init.fragments.MissionCreateFragment;
 import com.elzup.init.fragments.MissionsFragment;
 import com.elzup.init.managers.SessionStore;
 
@@ -23,11 +25,6 @@ public class MainActivity extends AppCompatActivity
 
     private static final String TAG = MainActivity.class.getSimpleName();
     private FragmentManager fragmentManager;
-    private FloatingActionButton fabPlus;
-
-    public FloatingActionButton getFabPlus() {
-        return this.fabPlus;
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,8 +38,6 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        this.fabPlus = (FloatingActionButton) findViewById(R.id.fab_plus);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
