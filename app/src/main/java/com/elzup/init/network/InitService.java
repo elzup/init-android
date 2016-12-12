@@ -36,6 +36,11 @@ public interface InitService {
     @GET("/v1/missions/{id}")
     Observable<MissionEntity> getMission(@Path("id") int id);
 
+    @POST("/v1/missions")
+    Observable<MissionEntity> postMission(
+            @Field("title") String title,
+            @Field("description") String description);
+
     @POST("/v1/missions/{id}/complete")
     Observable<CompleteEntity> postMissionComplete(@Path("id") int id);
 

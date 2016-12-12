@@ -110,6 +110,10 @@ public class MissionsFragment extends Fragment implements OnRecyclerListener {
 
     public void onCreateButtonClick(View view) {
         Log.d(TAG, "onCreateButtonClick: Clicked");
+        getActivity().getSupportFragmentManager().beginTransaction().replace(
+                R.id.content_main,
+                MissionCreateFragment.newInstance()
+        ).addToBackStack(TAG).commit();
     }
 
     private void initData() {

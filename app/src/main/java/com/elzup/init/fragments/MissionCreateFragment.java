@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,19 +13,19 @@ import android.view.animation.AnimationUtils;
 
 import com.elzup.init.MainActivity;
 import com.elzup.init.R;
+import com.elzup.init.databinding.FragmentMissionCreateBinding;
 import com.elzup.init.managers.SessionStore;
 import com.elzup.init.models.MissionEntity;
 import com.elzup.init.models.SessionEntity;
 import com.elzup.init.network.InitService;
 import com.elzup.init.network.InitServiceGenerator;
 
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
-
 public class MissionCreateFragment extends Fragment {
     public static final String TAG = MissionCreateFragment.class.getSimpleName();
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    private FragmentMissionCreateBinding binding;
+    private MissionEntity newMission;
     private MainActivity activity;
     private InitService initService;
     public boolean isSync;
@@ -60,7 +59,7 @@ public class MissionCreateFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         container.removeAllViews();
-        return inflater.inflate(R.layout.fragment_mission_detail, container, false);
+        return inflater.inflate(R.layout.fragment_mission_create, container, false);
     }
 
     @Override
@@ -73,6 +72,12 @@ public class MissionCreateFragment extends Fragment {
         FloatingActionButton favicon = (FloatingActionButton) getActivity().findViewById(R.id.indicator);
 
         favicon.startAnimation(AnimationUtils.loadAnimation(this.getActivity(), R.anim.rotate_forward));
+
+        binding = FragmentMissionCreateBinding.bind(getView());
+        // TODO: Dummy Factory
+        newMission = new MissionEntity(0, "", "", 0, false);
+        binding.setMission(newMission);
+        binding.setFragment(this);
 
         SessionEntity session = SessionStore.getSession();
         InitService initService = InitServiceGenerator.createService(session.getAccessToken());
@@ -93,5 +98,6 @@ public class MissionCreateFragment extends Fragment {
             return;
         }
         isSync = true;
+        // initService.postMission()
     }
 }
