@@ -4,12 +4,10 @@ package com.elzup.init.fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AnimationUtils;
 
 import com.elzup.init.MainActivity;
 import com.elzup.init.R;
@@ -22,8 +20,6 @@ import com.elzup.init.network.InitServiceGenerator;
 
 public class MissionCreateFragment extends Fragment {
     public static final String TAG = MissionCreateFragment.class.getSimpleName();
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private FragmentMissionCreateBinding binding;
     private MissionEntity newMission;
     private MainActivity activity;

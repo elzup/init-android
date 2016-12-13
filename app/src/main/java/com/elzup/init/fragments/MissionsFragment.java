@@ -3,7 +3,6 @@ package com.elzup.init.fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -25,14 +24,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
 public class MissionsFragment extends Fragment implements OnRecyclerListener {
 
-    // TODO: Customize parameter argument names
-    private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
     private InitService initService;
     private static final String TAG = MissionsFragment.class.getSimpleName();
     private List<MissionEntity> missionEntities;
@@ -50,12 +45,10 @@ public class MissionsFragment extends Fragment implements OnRecyclerListener {
     public MissionsFragment() {
     }
 
-    // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
-    public static MissionsFragment newInstance(int columnCount) {
+    public static MissionsFragment newInstance() {
         MissionsFragment fragment = new MissionsFragment();
         Bundle args = new Bundle();
-        args.putInt(ARG_COLUMN_COUNT, columnCount);
         fragment.setArguments(args);
         return fragment;
     }
@@ -121,12 +114,9 @@ public class MissionsFragment extends Fragment implements OnRecyclerListener {
         initService.getMissions()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<List<MissionEntity>>() {
-                    @Override
-                    public void call(List<MissionEntity> items) {
-                        missionEntities.addAll(items);
-                        adapter.notifyDataSetChanged();
-                    }
+                .subscribe(items -> {
+                    missionEntities.addAll(items);
+                    adapter.notifyDataSetChanged();
                 }, throwable -> {
                     Log.e(TAG, "initData: ", throwable);
                 });

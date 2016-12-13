@@ -1,7 +1,6 @@
 package com.elzup.init.fragments;
 
 import android.content.Context;
-import android.databinding.Bindable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -12,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 
-import com.elzup.init.BR;
 import com.elzup.init.MainActivity;
 import com.elzup.init.R;
 import com.elzup.init.databinding.FragmentMissionDetailBinding;
@@ -27,8 +25,6 @@ import rx.schedulers.Schedulers;
 
 public class MissionDetailFragment extends Fragment {
     public static final String TAG = MissionDetailFragment.class.getSimpleName();
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String MISSION_ID = "missionId";
     private FragmentMissionDetailBinding binding;
     private MainActivity activity;

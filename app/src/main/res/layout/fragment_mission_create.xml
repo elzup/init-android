@@ -29,7 +29,7 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/hint_mission_title"
                 android:inputType="text"
-                android:text="@{mission.title}"></android.support.design.widget.TextInputEditText>
+                android:text="@{mission.title}" />
 
         </android.support.design.widget.TextInputLayout>
 
@@ -42,7 +42,7 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/hint_mission_description"
                 android:inputType="text"
-                android:text="@{mission.description}"></android.support.design.widget.TextInputEditText>
+                android:text="@{mission.description}" />
         </android.support.design.widget.TextInputLayout>
 
         <!-- Submit button -->

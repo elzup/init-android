@@ -2,9 +2,7 @@ package com.elzup.init;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
@@ -14,9 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
-import com.elzup.init.fragments.MissionCreateFragment;
 import com.elzup.init.fragments.MissionsFragment;
 import com.elzup.init.managers.SessionStore;
 
@@ -109,7 +105,7 @@ public class MainActivity extends AppCompatActivity
 
     private void initFragment() {
         Fragment fragment;
-        fragment = MissionsFragment.newInstance(1);
+        fragment = MissionsFragment.newInstance();
         fragmentManager.beginTransaction()
                 .add(R.id.content_main, fragment)
                 .commit();

@@ -36,12 +36,7 @@ public class MissionsCellAdapter extends RecyclerView.Adapter<MissionsCellAdapte
     public void onBindViewHolder(ViewHolder holder, int position) {
         MissionEntity item = items.get(position);
         holder.getBinding().setVariable(BR.mission, item);
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listener.onRecyclerClicked(v, position);
-            }
-        });
+        holder.itemView.setOnClickListener(v -> listener.onRecyclerClicked(v, position));
         holder.getBinding().executePendingBindings();
     }
 

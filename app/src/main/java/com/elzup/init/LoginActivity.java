@@ -20,9 +20,6 @@ import com.elzup.init.network.InitService;
 import com.elzup.init.network.InitServiceGenerator;
 import com.elzup.init.utils.KeyUtil;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
@@ -56,14 +53,11 @@ public class LoginActivity extends AppCompatActivity {
             initService.createUser(username, password).observeOn(AndroidSchedulers.mainThread())
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread()).subscribe(
-                    new Action1<SessionEntity>() {
-                        @Override
-                        public void call(SessionEntity sessionEntity) {
-                            SessionStore.saveSession(sessionEntity);
+                    sessionEntity -> {
+                        SessionStore.saveSession(sessionEntity);
 
-                            Intent intent = new Intent(getApplication(), MainActivity.class);
-                            startActivity(intent);
-                        }
+                        Intent intent = new Intent(getApplication(), MainActivity.class);
+                        startActivity(intent);
                     }, throwable -> {
                         Log.e(TAG, "initData: ", throwable);
                     });
