@@ -69,10 +69,6 @@ public class MissionCreateFragment extends Fragment {
         activity = (MainActivity) getActivity();
         activity.setTitle("ミッション詳細");
 
-        FloatingActionButton favicon = (FloatingActionButton) getActivity().findViewById(R.id.indicator);
-
-        favicon.startAnimation(AnimationUtils.loadAnimation(this.getActivity(), R.anim.rotate_forward));
-
         binding = FragmentMissionCreateBinding.bind(getView());
         // TODO: Dummy Factory
         newMission = new MissionEntity(0, "", "", 0, false);

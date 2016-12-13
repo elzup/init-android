@@ -48,7 +48,8 @@
             android:backgroundTint="@android:color/darker_gray"
             android:onClick="@{fragment.onCompleteButtonClick}"
             android:tint="@android:color/black"
-            android:visibility="@{fragment.isSync ? View.VISIBLE : View.INVISIBLE}"
+            android:visibility="@{mission.sync ? View.VISIBLE : View.INVISIBLE}"
+
             app:borderWidth="0dp"
             app:srcCompat="@drawable/ic_autorenew_black_24dp" />
 
@@ -62,7 +63,7 @@
             android:backgroundTint="@android:color/white"
             android:onClick="@{fragment.onCompleteButtonClick}"
             android:tint="@android:color/darker_gray"
-            android:visibility="@{fragment.isSync ? View.INVISIBLE : (!mission.isCompleted ? View.VISIBLE : View.INVISIBLE)}"
+            android:visibility="@{mission.sync ? View.INVISIBLE : (!mission.completed ? View.VISIBLE : View.INVISIBLE)}"
             app:borderWidth="0dp"
             app:srcCompat="@drawable/ic_check_my" />
 
@@ -76,7 +77,7 @@
             android:backgroundTint="@android:color/white"
             android:onClick="@{fragment.onUncompleteButtonClick}"
             android:tint="@android:color/holo_green_dark"
-            android:visibility="@{fragment.isSync ? View.INVISIBLE : (mission.isCompleted ? View.VISIBLE : View.INVISIBLE)}"
+            android:visibility="@{mission.sync ? View.INVISIBLE : (mission.completed ? View.VISIBLE : View.INVISIBLE)}"
             app:borderWidth="0dp"
             app:srcCompat="@drawable/ic_check_my" />
     </RelativeLayout>

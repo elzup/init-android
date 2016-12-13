@@ -1,6 +1,7 @@
 package com.elzup.init.fragments;
 
 import android.content.Context;
+import android.databinding.Bindable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 
+import com.elzup.init.BR;
 import com.elzup.init.MainActivity;
 import com.elzup.init.R;
 import com.elzup.init.databinding.FragmentMissionDetailBinding;
@@ -34,7 +36,6 @@ public class MissionDetailFragment extends Fragment {
     private FloatingActionButton fabCompleted;
     private MissionEntity mission;
     private InitService initService;
-    public boolean isSync;
 
     public MissionDetailFragment() {
         // Required empty public constructor
@@ -58,7 +59,6 @@ public class MissionDetailFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.isSync = false;
         SessionEntity session = SessionStore.getSession();
         initService = InitServiceGenerator.createService(session.getAccessToken());
     }
@@ -110,30 +110,35 @@ public class MissionDetailFragment extends Fragment {
     }
 
     public void onCompleteButtonClick(View view) {
-        if (isSync) { return; }
-        isSync = true;
+        if (mission.isSync()) {
+            return;
+        }
+        mission.setSync(true);
         initService.postMissionComplete(mission.getId())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(completeEntity -> {
                     this.mission.setCompleted(true);
-                    isSync = false;
-                    binding.setMission(mission);
+                    this.mission.setSync(false);
+                    // binding.setMission(mission);
                 }, throwable -> {
                     Log.e(TAG, "onCompleteButtonClick: ", throwable);
                 });
     }
 
     public void onUncompleteButtonClick(View view) {
-        if (isSync) { return; }
-        isSync = true;
+        if (mission.isSync()) {
+            return;
+        }
+        mission.setSync(true);
         initService.postMissionUncomplete(mission.getId())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(completeEntity -> {
                     this.mission.setCompleted(false);
-                    isSync = false;
-                    binding.setMission(mission);
+
+                    this.mission.setSync(false);
+                    // binding.setMission(mission);
                 }, throwable -> {
                     Log.e(TAG, "onUncompleteButtonClick: ", throwable);
                 });
