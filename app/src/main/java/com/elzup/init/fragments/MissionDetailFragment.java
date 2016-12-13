@@ -7,6 +7,9 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
@@ -63,6 +66,7 @@ public class MissionDetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         container.removeAllViews();
+        setHasOptionsMenu(true);
         return inflater.inflate(R.layout.fragment_mission_detail, container, false);
     }
 
@@ -93,6 +97,28 @@ public class MissionDetailFragment extends Fragment {
                 }, throwable -> {
                     Log.e(TAG, "onActivityCreated: ", throwable);
                 });
+    }
+
+    private MenuItem menuItem;
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.mission_details, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_edit:
+                Log.d(TAG, "onOptionsItemSelected: Action edit menu clicked");
+                break;
+            case R.id.action_delete:
+                Log.d(TAG, "onOptionsItemSelected: Action delete menu clicked");
+                break;
+        }
+        return true;
     }
 
     @Override

@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 
 import com.elzup.init.MainActivity;
 import com.elzup.init.R;
@@ -17,6 +18,10 @@ import com.elzup.init.models.MissionEntity;
 import com.elzup.init.models.SessionEntity;
 import com.elzup.init.network.InitService;
 import com.elzup.init.network.InitServiceGenerator;
+
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.schedulers.Schedulers;
 
 public class MissionCreateFragment extends Fragment {
     public static final String TAG = MissionCreateFragment.class.getSimpleName();
@@ -46,7 +51,6 @@ public class MissionCreateFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.isSync = false;
         SessionEntity session = SessionStore.getSession();
         initService = InitServiceGenerator.createService(session.getAccessToken());
     }
@@ -72,7 +76,7 @@ public class MissionCreateFragment extends Fragment {
         binding.setFragment(this);
 
         SessionEntity session = SessionStore.getSession();
-        InitService initService = InitServiceGenerator.createService(session.getAccessToken());
+        initService = InitServiceGenerator.createService(session.getAccessToken());
     }
 
     @Override
@@ -86,10 +90,15 @@ public class MissionCreateFragment extends Fragment {
     }
 
     public void onSubmitButtonClick(View view) {
-        if (isSync) {
-            return;
-        }
-        isSync = true;
-        // initService.postMission()
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+
+        this.initService.postMission(newMission.getTitle(), newMission.getDescription())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(missionEntity -> {
+                    getActivity().getSupportFragmentManager().popBackStack();
+                }, throwable -> {
+                });
     }
 }
