@@ -22,7 +22,6 @@ import com.elzup.init.network.InitService;
 import com.elzup.init.network.InitServiceGenerator;
 
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
 public class MissionCreateFragment extends Fragment {
