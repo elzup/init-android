@@ -21,4 +21,11 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hint_mission_title">タイトル</string>
+    <string name="hint_mission_description">説明文</string>
+    <string name="submit_button">ミッションを作成</string>
+    <string name="submit_button_edit">ミッションを更新</string>
+    <string name="action_edit">編集する</string>
+    <string name="action_delete">削除</string>
+    <string name="action_uncomplete">未達成にする</string>
 </resources>

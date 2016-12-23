@@ -16,5 +16,9 @@ public class UserEntity {
     public String getEmail() {
         return email;
     }
+
+    public boolean equals(UserEntity user) {
+        return this.id == user.id;
+    }
 }
 
