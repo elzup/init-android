@@ -35,6 +35,7 @@
             android:layout_gravity="bottom|end"
             android:layout_margin="@dimen/fab_margin"
             android:background="@color/colorPrimaryDark"
+            android:backgroundTint="@color/colorPrimaryDark"
             android:onClick="@{fragment.onCreateButtonClick}"
             android:src="@drawable/ic_action_add" />
 

@@ -31,11 +31,13 @@ import rx.schedulers.Schedulers;
 public class MissionDetailFragment extends Fragment {
     public static final String TAG = MissionDetailFragment.class.getSimpleName();
     private static final String MISSION_ID = "missionId";
+    private static final int MENU_SELECT_UNCOMPLETE = 0;
     private FragmentMissionDetailBinding binding;
     private MainActivity activity;
     private MissionEntity mission;
     private InitService initService;
     private UserEntity loginUser;
+    private Menu menu;
 
     public MissionDetailFragment() {
         // Required empty public constructor
@@ -96,35 +98,38 @@ public class MissionDetailFragment extends Fragment {
                 .subscribe(missionEntity -> {
                     mission = missionEntity;
                     binding.setMission(mission);
+                    this.menu.findItem(R.id.action_uncomplete).setVisible(mission.isCompleted());
+                    getActivity().invalidateOptionsMenu();
                 }, throwable -> {
                     Log.e(TAG, "onActivityCreated: ", throwable);
                 });
     }
 
-    private MenuItem menuItem;
-
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        this.menu = menu;
         inflater.inflate(R.menu.mission_details, menu);
+        menu.findItem(R.id.action_uncomplete).setVisible(mission.isCompleted());
         super.onCreateOptionsMenu(menu, inflater);
     }
 
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (!this.loginUser.equals(this.mission.getAuthor())) {
-            String message = "作成者にしか出来ません。";
-            Toast.makeText(this.getContext(), message, Toast.LENGTH_LONG).show();
-            return false;
-        }
         switch (item.getItemId()) {
             case R.id.action_edit:
+                if (!limitOwner()) {
+                    return false;
+                }
                 getActivity().getSupportFragmentManager().beginTransaction().replace(
                         R.id.content_main,
                         MissionEditFragment.newInstance(mission.getId())
                 ).addToBackStack(TAG).commit();
                 break;
             case R.id.action_delete:
+                if (!limitOwner()) {
+                    return false;
+                }
                 initService.deleteMission(mission.getId())
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
@@ -135,6 +140,17 @@ public class MissionDetailFragment extends Fragment {
                             Log.e(TAG, "onOptionsItemSelected: ", throwable);
                         });
                 break;
+            case R.id.action_uncomplete:
+                this.unComplete();
+        }
+        return true;
+    }
+
+    public boolean limitOwner() {
+        if (!this.loginUser.equals(this.mission.getAuthor())) {
+            String message = "作成者にしか出来ません。";
+            Toast.makeText(this.getContext(), message, Toast.LENGTH_LONG).show();
+            return false;
         }
         return true;
     }
@@ -150,6 +166,7 @@ public class MissionDetailFragment extends Fragment {
     }
 
     public void onCompleteButtonClick(View view) {
+        Log.d(TAG, "onCompleteButtonClick: ");
         if (mission.isSync()) {
             return;
         }
@@ -159,6 +176,9 @@ public class MissionDetailFragment extends Fragment {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(completeEntity -> {
                     this.mission.setCompleted(true);
+                    this.menu.findItem(R.id.action_uncomplete).setVisible(true);
+                    getActivity().invalidateOptionsMenu();
+                    Toast.makeText(this.getContext(), "おめでとう！", Toast.LENGTH_LONG).show();
                     this.mission.setSync(false);
                     // binding.setMission(mission);
                 }, throwable -> {
@@ -166,7 +186,8 @@ public class MissionDetailFragment extends Fragment {
                 });
     }
 
-    public void onUncompleteButtonClick(View view) {
+    public void unComplete() {
+        Log.d(TAG, "unComplete: ");
         if (mission.isSync()) {
             return;
         }
@@ -176,7 +197,9 @@ public class MissionDetailFragment extends Fragment {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(completeEntity -> {
                     this.mission.setCompleted(false);
-
+                    this.menu.findItem(R.id.action_uncomplete).setVisible(false);
+                    getActivity().invalidateOptionsMenu();
+                    Toast.makeText(this.getContext(), "未達成にしました。", Toast.LENGTH_LONG).show();
                     this.mission.setSync(false);
                     // binding.setMission(mission);
                 }, throwable -> {

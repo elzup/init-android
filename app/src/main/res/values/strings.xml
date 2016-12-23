@@ -27,4 +27,5 @@
     <string name="submit_button_edit">ミッションを更新</string>
     <string name="action_edit">編集する</string>
     <string name="action_delete">削除</string>
+    <string name="action_uncomplete">未達成にする</string>
 </resources>

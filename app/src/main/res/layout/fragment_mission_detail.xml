@@ -46,7 +46,6 @@
             android:layout_alignParentRight="true"
             android:layout_margin="6dp"
             android:backgroundTint="@android:color/darker_gray"
-            android:onClick="@{fragment.onCompleteButtonClick}"
             android:tint="@android:color/black"
             android:visibility="@{mission.sync ? View.VISIBLE : View.INVISIBLE}"
 
@@ -74,9 +73,8 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:layout_margin="6dp"
-            android:backgroundTint="@android:color/white"
-            android:onClick="@{fragment.onUncompleteButtonClick}"
-            android:tint="@android:color/holo_green_dark"
+            android:backgroundTint="@color/colorPrimaryDark"
+            android:tint="@color/colorPrimary"
             android:visibility="@{mission.sync ? View.INVISIBLE : (mission.completed ? View.VISIBLE : View.INVISIBLE)}"
             app:borderWidth="0dp"
             app:srcCompat="@drawable/ic_check_my" />
