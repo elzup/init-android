@@ -67,6 +67,7 @@ public class MissionsFragment extends Fragment implements OnRecyclerListener {
         relativeLayout = (RelativeLayout) inflater.inflate(R.layout.fragment_missions, container, false);
         recyclerView = (RecyclerView) relativeLayout.findViewById(R.id.list);
         recyclerView.setAdapter(adapter);
+        recyclerView.addItemDecoration(new DividerItemDecoration(this.getContext()));
 
         // HACK: 再描画時は差分のみ表示したい
         initData();
