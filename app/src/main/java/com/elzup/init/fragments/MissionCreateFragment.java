@@ -16,6 +16,7 @@ import com.elzup.init.databinding.FragmentMissionCreateBinding;
 import com.elzup.init.managers.SessionStore;
 import com.elzup.init.models.MissionEntity;
 import com.elzup.init.models.SessionEntity;
+import com.elzup.init.models.UserEntity;
 import com.elzup.init.network.InitService;
 import com.elzup.init.network.InitServiceGenerator;
 
@@ -71,7 +72,7 @@ public class MissionCreateFragment extends Fragment {
 
         binding = FragmentMissionCreateBinding.bind(getView());
         // TODO: Dummy Factory
-        newMission = new MissionEntity(0, "", "", 0, false);
+        newMission = new MissionEntity(0, "", "", new UserEntity(99, "a@mail.com"), false);
         binding.setMission(newMission);
         binding.setFragment(this);
 
@@ -93,7 +94,8 @@ public class MissionCreateFragment extends Fragment {
         InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
 
-        this.initService.postMission(newMission.getTitle(), newMission.getDescription())
+        // TODO: Category 固定
+        this.initService.postMission(newMission.getTitle(), newMission.getDescription(), 1)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(missionEntity -> {

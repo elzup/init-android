@@ -12,8 +12,7 @@ public class MissionEntity extends BaseObservable {
     private String title;
     @Bindable
     private String description;
-    @SerializedName("author_id")
-    private int authorId;
+    private UserEntity author;
     @SerializedName("is_completed")
     private boolean isCompleted;
     private boolean isSync;
@@ -44,12 +43,12 @@ public class MissionEntity extends BaseObservable {
         notifyPropertyChanged(BR.description);
     }
 
-    public int getAuthorId() {
-        return authorId;
+    public UserEntity getAuthor() {
+        return author;
     }
 
-    public void setAuthorId(int authorId) {
-        this.authorId = authorId;
+    public void setAuthor(UserEntity author) {
+        this.author = author;
     }
 
     @Bindable
@@ -72,11 +71,11 @@ public class MissionEntity extends BaseObservable {
         notifyPropertyChanged(BR.sync);
     }
 
-    public MissionEntity(int id, String title, String description, int authorId, boolean isCompleted) {
+    public MissionEntity(int id, String title, String description, UserEntity author, boolean isCompleted) {
         this.id = id;
         this.title = title;
+        this.author = author;
         this.description = description;
-        this.authorId = authorId;
         this.isCompleted = isCompleted;
         this.isSync = false;
     }

@@ -6,6 +6,7 @@ import android.content.pm.PackageInstaller;
 
 import com.elzup.init.models.RefreshRequestEntity;
 import com.elzup.init.models.SessionEntity;
+import com.elzup.init.models.UserEntity;
 
 public class SessionStore {
     public static final String PREFERENCES_FILE_NAME = "preference";
@@ -27,6 +28,13 @@ public class SessionStore {
         String token = settings.getString("token", "");
         String password = settings.getString("password", "");
         return new SessionEntity(id, username, token, password);
+    }
+
+    public static UserEntity getUser() {
+        SharedPreferences settings = context.getSharedPreferences(PREFERENCES_FILE_NAME, Context.MODE_PRIVATE);
+        int id = settings.getInt("id", 0);
+        String username = settings.getString("username", "");
+        return new UserEntity(id, username);
     }
 
     public static RefreshRequestEntity getRefreshRequestEntity() {

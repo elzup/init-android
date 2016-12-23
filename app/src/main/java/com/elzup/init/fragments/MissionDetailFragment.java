@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
+import android.widget.Toast;
 
 import com.elzup.init.MainActivity;
 import com.elzup.init.R;
@@ -20,6 +21,7 @@ import com.elzup.init.databinding.FragmentMissionDetailBinding;
 import com.elzup.init.managers.SessionStore;
 import com.elzup.init.models.MissionEntity;
 import com.elzup.init.models.SessionEntity;
+import com.elzup.init.models.UserEntity;
 import com.elzup.init.network.InitService;
 import com.elzup.init.network.InitServiceGenerator;
 
@@ -31,10 +33,9 @@ public class MissionDetailFragment extends Fragment {
     private static final String MISSION_ID = "missionId";
     private FragmentMissionDetailBinding binding;
     private MainActivity activity;
-    private FloatingActionButton fabComplete;
-    private FloatingActionButton fabCompleted;
     private MissionEntity mission;
     private InitService initService;
+    private UserEntity loginUser;
 
     public MissionDetailFragment() {
         // Required empty public constructor
@@ -58,6 +59,7 @@ public class MissionDetailFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        loginUser = SessionStore.getUser();
         SessionEntity session = SessionStore.getSession();
         initService = InitServiceGenerator.createService(session.getAccessToken());
     }
@@ -75,7 +77,7 @@ public class MissionDetailFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         // Inflate the layout for this fragment
         binding = FragmentMissionDetailBinding.bind(getView());
-        this.mission = new MissionEntity(99, "ゆるゆり", "This is Description !!!!!", 10, false);
+        this.mission = new MissionEntity(99, "ゆるゆり", "This is Description !!!!!", new UserEntity(99, "a@mail.com"), false);
         binding.setMission(this.mission);
         binding.setFragment(this);
         activity = (MainActivity) getActivity();
@@ -110,12 +112,23 @@ public class MissionDetailFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        if (!this.loginUser.equals(this.mission.getAuthor())) {
+            String message = "作成者にしか出来ません。";
+            Toast.makeText(this.getContext(), message, Toast.LENGTH_LONG).show();
+        }
         switch (item.getItemId()) {
             case R.id.action_edit:
                 Log.d(TAG, "onOptionsItemSelected: Action edit menu clicked");
                 break;
             case R.id.action_delete:
-                Log.d(TAG, "onOptionsItemSelected: Action delete menu clicked");
+                initService.deleteMission(mission.getId())
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(missionEntity -> {
+
+                        }, throwable -> {
+                            Log.e(TAG, "onOptionsItemSelected: ", throwable);
+                        });
                 break;
         }
         return true;
