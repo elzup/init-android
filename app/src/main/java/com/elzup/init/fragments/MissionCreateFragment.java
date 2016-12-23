@@ -72,7 +72,7 @@ public class MissionCreateFragment extends Fragment {
 
         binding = FragmentMissionCreateBinding.bind(getView());
         // TODO: Dummy Factory
-        newMission = new MissionEntity(99, "...", "...", new UserEntity(99, "..."), false);
+        newMission = new MissionEntity(99, "", "", new UserEntity(99, "..."), false);
 
         binding.setMission(newMission);
         binding.setFragment(this);
