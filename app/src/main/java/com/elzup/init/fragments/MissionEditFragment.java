@@ -75,7 +75,7 @@ public class MissionEditFragment extends Fragment {
 
         binding = FragmentMissionEditBinding.bind(getView());
         // TODO: Dummy Factory
-        mission = new MissionEntity(0, "", "", new UserEntity(99, "a@mail.com"), false);
+        mission = new MissionEntity(99, "...", "...", new UserEntity(99, "..."), false);
         binding.setMission(mission);
         binding.setFragment(this);
         int missionId = getArguments().getInt(MISSION_ID);

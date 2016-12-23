@@ -77,7 +77,7 @@ public class MissionDetailFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         // Inflate the layout for this fragment
         binding = FragmentMissionDetailBinding.bind(getView());
-        this.mission = new MissionEntity(99, "ゆるゆり", "This is Description !!!!!", new UserEntity(99, "a@mail.com"), false);
+        this.mission = new MissionEntity(99, "...", "...", new UserEntity(99, "..."), false);
         binding.setMission(this.mission);
         binding.setFragment(this);
         activity = (MainActivity) getActivity();

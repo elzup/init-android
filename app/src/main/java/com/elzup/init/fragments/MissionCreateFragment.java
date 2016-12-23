@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Toast;
 
 import com.elzup.init.MainActivity;
 import com.elzup.init.R;
@@ -72,7 +73,8 @@ public class MissionCreateFragment extends Fragment {
 
         binding = FragmentMissionCreateBinding.bind(getView());
         // TODO: Dummy Factory
-        newMission = new MissionEntity(0, "", "", new UserEntity(99, "a@mail.com"), false);
+        newMission = new MissionEntity(99, "...", "...", new UserEntity(99, "..."), false);
+
         binding.setMission(newMission);
         binding.setFragment(this);
 
@@ -100,6 +102,7 @@ public class MissionCreateFragment extends Fragment {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(missionEntity -> {
                     getActivity().getSupportFragmentManager().popBackStack();
+                    Toast.makeText(this.getContext(), "ミッションを作成しました！", Toast.LENGTH_LONG).show();
                 }, throwable -> {
                 });
     }
