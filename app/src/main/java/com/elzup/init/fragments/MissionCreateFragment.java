@@ -96,7 +96,7 @@ public class MissionCreateFragment extends Fragment {
         imm.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
 
         // TODO: Category 固定
-        this.initService.postMission(newMission.getTitle(), newMission.getDescription(), 1)
+        this.initService.postMission(newMission.getTitle(), newMission.getDescription(), 5)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(missionEntity -> {

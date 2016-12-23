@@ -6,6 +6,7 @@ import com.elzup.init.models.SessionEntity;
 
 import java.util.List;
 
+import retrofit2.Call;
 import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -25,7 +26,7 @@ public interface InitService {
 
     @FormUrlEncoded
     @POST("/v1/users")
-    Observable<SessionEntity> createUser(
+    Call<SessionEntity> createUser(
             @Field("username") String username,
             @Field("password") String password);
 

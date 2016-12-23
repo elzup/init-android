@@ -3,6 +3,7 @@ package com.elzup.init;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -13,16 +14,21 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.elzup.init.managers.SessionStore;
+import com.elzup.init.models.ErrorEntity;
 import com.elzup.init.models.SessionEntity;
 import com.elzup.init.network.InitService;
 import com.elzup.init.network.InitServiceGenerator;
 import com.elzup.init.utils.KeyUtil;
+import com.google.gson.Gson;
 
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
-import rx.schedulers.Schedulers;
+import java.io.IOException;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * A login screen that offers login via email/password.
@@ -35,6 +41,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText mUserNameView;
     private View mProgressView;
     private View mLoginFormView;
+    private Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +50,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         // Set up the login form.
         mUserNameView = (EditText) findViewById(R.id.user_name);
+        this.mContext = this;
 
         Button mSignUpButton = (Button) findViewById(R.id.sign_up_button);
         mSignUpButton.setOnClickListener(view -> {
@@ -50,23 +58,43 @@ public class LoginActivity extends AppCompatActivity {
             InitService initService = InitServiceGenerator.createService();
             String username = mUserNameView.getText().toString();
             final String password = KeyUtil.generateRandomCode();
-            initService.createUser(username, password).observeOn(AndroidSchedulers.mainThread())
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread()).subscribe(
-                    sessionEntity -> {
-                        SessionStore.saveSession(sessionEntity);
-
-                        Intent intent = new Intent(getApplication(), MainActivity.class);
-                        startActivity(intent);
-                    }, throwable -> {
-                        Log.e(TAG, "initData: ", throwable);
-                    });
-
-            attemptLogin();
+            initService.createUser(username, password).enqueue(new LoginCallback());
         });
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+    }
+
+    public class LoginCallback implements Callback<SessionEntity> {
+
+        @Override
+        public void onResponse(Call<SessionEntity> call, Response<SessionEntity> response) {
+            showProgress(false);
+            if (!response.isSuccessful()) {
+                errorMessage(response);
+                return;
+            }
+            SessionStore.saveSession(response.body());
+            Intent intent = new Intent(getApplication(), MainActivity.class);
+            String message = "ようこそ " + response.body().getUsername() + " さん！";
+            Toast.makeText(mContext, message, Toast.LENGTH_LONG).show();
+            startActivity(intent);
+        }
+
+        void errorMessage(Response<SessionEntity> response) {
+            Gson gson = new Gson();
+            try {
+                ErrorEntity errorEntity = gson.fromJson(response.errorBody().string(), ErrorEntity.class);
+                Toast.makeText(mContext, errorEntity.getMessage(), Toast.LENGTH_LONG).show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        public void onFailure(Call<SessionEntity> call, Throwable t) {
+            Log.e(TAG, "onFailure: ", t);
+        }
     }
 
     /**
