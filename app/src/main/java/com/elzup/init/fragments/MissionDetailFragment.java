@@ -129,7 +129,8 @@ public class MissionDetailFragment extends Fragment {
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(missionEntity -> {
-
+                            getActivity().getSupportFragmentManager().popBackStack();
+                            Toast.makeText(this.getContext(), "ミッションを削除しました。", Toast.LENGTH_LONG).show();
                         }, throwable -> {
                             Log.e(TAG, "onOptionsItemSelected: ", throwable);
                         });
