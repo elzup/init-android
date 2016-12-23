@@ -115,10 +115,14 @@ public class MissionDetailFragment extends Fragment {
         if (!this.loginUser.equals(this.mission.getAuthor())) {
             String message = "作成者にしか出来ません。";
             Toast.makeText(this.getContext(), message, Toast.LENGTH_LONG).show();
+            return false;
         }
         switch (item.getItemId()) {
             case R.id.action_edit:
-                Log.d(TAG, "onOptionsItemSelected: Action edit menu clicked");
+                getActivity().getSupportFragmentManager().beginTransaction().replace(
+                        R.id.content_main,
+                        MissionEditFragment.newInstance(mission.getId())
+                ).addToBackStack(TAG).commit();
                 break;
             case R.id.action_delete:
                 initService.deleteMission(mission.getId())
